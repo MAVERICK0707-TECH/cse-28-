@@ -18,7 +18,33 @@
         </video>
         <iframe width="560" height="315" src="https://www.youtube.com/embed/dQw4w9WgXcQ" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
 
-
+<table border="2">
+    <caption>Student Information</caption>
+    <tr>
+        <th> Name</th>
+        <th> Course</th>
+        <th> Section</th>
+        <th>Roll number</th>
+    </tr>
+    <tr>
+        <td> Alice</td>
+        <td> B.tech</td>
+        <td> CSE 28</td>
+        <td>12</td>
+    </tr>
+    <tr>
+        <td> Bob</td>
+        <td> B.tech</td>
+        <td>CSE 27 </td>
+        <td>14</td>
+    </tr>
+    <tr>
+        <td> Charlie</td>
+        <td> B.tech</td>
+        <td> CSE 10</td>
+        <td>16</td>
+    </tr>
+</table>
     
 </body>
 </html> 
