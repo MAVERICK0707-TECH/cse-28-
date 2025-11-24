@@ -1,0 +1,43 @@
+<html>
+    <head>
+        Flexbox
+    </head>
+    <style>
+        body{
+            margin : 0;
+            padding : 0;
+    }
+    
+    div{
+        border : 2px solid rgb(212, 12, 12);
+        }
+    .container{
+        display : flex;
+        flex-direction : row;
+        justify-content : space-around;
+        align-items : center;
+        height : 400px
+        ;
+        }
+    .item1{
+        background-color : lightblue;
+        width : 450px; 
+        height : 200px; 
+    }
+
+    .item2{
+        background-color : lightgreen;
+        width : 100px;  
+    }
+
+    </style>
+    <body>
+        <div class = "container">
+            <div class = "item1">Item 1</div>
+            <div class = "item2">Item 2</div>
+        </div>
+        <p>
+            In the above example, we have created a flex container using the display property set to flex. The flex-direction property is set to row, which arranges the flex items (Item 1 and Item 2) in a horizontal row. The justify-content property is set to space-around, which distributes the items evenly with space around them. The align-items property is set to center, which vertically centers the items within the container.
+        </p>
+    </body>
+</html>
