@@ -1,0 +1,74 @@
+<html>
+    <head>
+        <title>Layout Example</title>
+    </head>
+    <style>
+        body{
+            margin : 0;
+            padding : 0;
+    }
+    html, *{
+        margin : 0;
+        padding : 0;
+        box-sizing : border-box;
+
+    }
+
+    #main{
+        display : flex;
+        flex-direction : column-reverse;
+        justify-content : space-between;
+        align-items : center;
+        height : 400px;
+        width : 900px;
+        margin : auto;
+        background-color : lightgray;
+        gap : 10px;
+        border : 2px solid rgb(12, 12, 212);
+        flex-wrap : wrap;
+    }
+    .box1{
+        background-color : lightcoral;
+        width : 200px;
+        height : 300px;
+    }
+    .box2{
+        background-color : lightseagreen;
+        width : 200px;
+        height : 300px;
+    }
+    .box3{
+        background-color : lightpink;
+        width : 200px;
+        height : 300px;
+    }
+    .box4{
+        background-color : lightgoldenrodyellow;
+        width : 200px;
+        height : 300px;
+    }
+    </style>
+    <body>
+        <div id = "main" >
+            <div class = box1>
+                Box 1
+            </div>
+            <div class = box2>
+                Box 2
+
+            </div>
+            <div class = box3>
+                Box 3
+
+            </div>
+            <div class = box4>
+                Box 4
+
+        </div>
+        </div>
+                
+
+    </body>
+    
+    
+</html>
