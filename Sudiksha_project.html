@@ -1,0 +1,498 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Saffron & Silk | Global Dining</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700&family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+
+    <style>
+       
+        :root {
+            --gold: #c59d5f;
+            --gold-glow: #e6c278;
+            --black: #1a1a1a;
+            --dark-gray: #2c2c2c;
+            --white: #ffffff;
+            --shadow: 0 10px 30px rgba(0,0,0,0.7);
+            --transition: all 0.3s ease-in-out;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Lato', sans-serif;
+        }
+
+        body {
+            background-color: var(--black);
+            color: var(--white);
+            overflow-x: hidden;
+            scroll-behavior: smooth;
+        }
+
+        
+        input[type="radio"] {
+            display: none;
+        }
+
+        
+        header {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            padding: 1rem 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: rgba(18, 18, 18, 0.9);
+            backdrop-filter: blur(10px);
+            z-index: 1000;
+            border-bottom: 1px solid rgba(197, 157, 95, 0.3);
+            transition: var(--transition);
+        }
+
+        header:hover {
+            border-bottom-color: var(--gold);
+        }
+
+        .logo {
+            font-family: 'Cinzel', serif;
+            font-size: 1.8rem;
+            color: var(--gold);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .logo:hover {
+            text-shadow: 0 0 15px var(--gold);
+        }
+
+        .cart-icon {
+            position: relative;
+            font-size: 1.5rem;
+            color: var(--white);
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .cart-icon:hover { color: var(--gold); transform: scale(1.1); }
+        .cart-icon::after {
+            content: '0'; 
+            position: absolute;
+            top: -8px; right: -10px;
+            background: var(--gold);
+            color: var(--black);
+            font-size: 0.7rem;
+            font-weight: bold;
+            padding: 2px 6px;
+            border-radius: 50%;
+        }
+
+        
+        .hero {
+            height: 60vh;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            overflow: hidden;
+        }
+
+        .video-bg {
+            position: absolute;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            object-fit: cover;
+            z-index: -2;
+            opacity: 0.5;
+        }
+        
+        .hero-overlay {
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(to bottom, transparent, var(--black));
+            z-index: -1;
+        }
+
+        .hero h1 {
+            font-family: 'Cinzel', serif;
+            font-size: 3.5rem;
+            text-shadow: 2px 2px 10px rgba(0,0,0,0.8);
+            margin-bottom: 1rem;
+            animation: slideDown 1s ease-out;
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            color: #ddd;
+            letter-spacing: 1px;
+            animation: slideUp 1s ease-out;
+        }
+
+        
+        .controls {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin: -30px auto 40px;
+            position: relative;
+            z-index: 10;
+        }
+
+        .tab-label {
+            padding: 12px 25px;
+            background: rgba(44, 44, 44, 0.9);
+            border: 1px solid var(--gold);
+            color: var(--white);
+            font-weight: bold;
+            text-transform: uppercase;
+            font-size: 0.9rem;
+            cursor: pointer;
+            border-radius: 50px;
+            transition: var(--transition);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.5);
+            user-select: none;
+            position: relative;
+            overflow: hidden;
+        }
+
+        
+        .tab-label:hover {
+            background: #333;
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(197, 157, 95, 0.3);
+        }
+
+        
+        #indian:checked ~ .controls label[for="indian"],
+        #chinese:checked ~ .controls label[for="chinese"],
+        #continental:checked ~ .controls label[for="continental"],
+        #desserts:checked ~ .controls label[for="desserts"],
+        #drinks:checked ~ .controls label[for="drinks"] {
+            background: var(--gold);
+            color: var(--black);
+            box-shadow: 0 0 20px var(--gold-glow);
+            border-color: var(--gold);
+            transform: scale(1.05);
+        }
+
+        .menu-windows {
+            position: relative;
+            min-height: 100vh;
+            padding: 0 5% 50px;
+        }
+
+        .cuisine-section {
+            display: none; 
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+            animation: fadeIn 0.6s ease;
+        }
+
+        #indian:checked ~ .menu-windows .indian-menu,
+        #chinese:checked ~ .menu-windows .chinese-menu,
+        #continental:checked ~ .menu-windows .continental-menu,
+        #desserts:checked ~ .menu-windows .desserts-menu,
+        #drinks:checked ~ .menu-windows .drinks-menu {
+            display: grid;
+        }
+        .card {
+            background: var(--dark-gray);
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: var(--shadow);
+            position: relative;
+            transition: var(--transition);
+            border: 1px solid rgba(255,255,255,0.05);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .card:hover {
+            transform: translateY(-10px);
+            border-color: var(--gold);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.8);
+        }
+
+        .image-box {
+            height: 220px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .image-box img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.6s ease;
+        }
+
+        .card:hover .image-box img {
+            transform: scale(1.15);
+        }
+
+        .badge {
+            position: absolute;
+            top: 15px;
+            left: 15px;
+            background: rgba(0,0,0,0.85);
+            color: var(--gold);
+            padding: 5px 12px;
+            font-size: 0.7rem;
+            border-radius: 20px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            backdrop-filter: blur(5px);
+            border: 1px solid var(--gold);
+        }
+
+        .info {
+            padding: 25px;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .title-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 10px;
+        }
+
+        .dish-name { font-size: 1.25rem; font-weight: 700; color: var(--white); line-height: 1.2; }
+        .price { color: var(--gold); font-size: 1.15rem; font-weight: bold; white-space: nowrap; margin-left: 10px; }
+        
+        .description {
+            color: #aaa;
+            font-size: 0.9rem;
+            margin-bottom: 25px;
+            line-height: 1.6;
+        }
+
+        
+        .action-row {
+            display: flex;
+            gap: 12px;
+        }
+
+        .btn {
+            flex: 1;
+            padding: 12px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: 0.2s;
+            text-transform: uppercase;
+            font-size: 0.75rem;
+            letter-spacing: 1px;
+        }
+
+        .btn-dine {
+            background: transparent;
+            border: 1px solid #555;
+            color: #ccc;
+        }
+        
+        .btn-dine:hover {
+            border-color: var(--white);
+            color: var(--white);
+            background: rgba(255,255,255,0.05);
+        }
+
+        .btn-cart {
+            background: var(--gold);
+            color: var(--black);
+        }
+
+        .btn-cart:hover {
+            background: var(--gold-glow);
+            box-shadow: 0 0 15px rgba(197, 157, 95, 0.4);
+        }
+
+        .btn-cart:active {
+            transform: scale(0.95);
+            background: #27ae60;
+        }
+        
+        .btn-cart:active span { display: none; }
+        .btn-cart:active::after { content: "Added!"; color: white; }
+
+        
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes slideDown { from { transform: translateY(-50px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+        @keyframes slideUp { from { transform: translateY(50px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+
+        @media (max-width: 768px) {
+            .hero h1 { font-size: 2.2rem; }
+            .controls { gap: 10px; padding: 0 10px; }
+            .tab-label { padding: 10px 15px; font-size: 0.8rem; }
+        }
+
+        footer {
+            text-align: center;
+            padding: 40px 20px;
+            background: #111;
+            border-top: 1px solid #333;
+            color: #666;
+            margin-top: 80px;
+        }
+        footer p { margin-top: 10px; font-size: 0.9rem; }
+        .footer-icons i { margin: 0 10px; color: var(--gold); cursor: pointer; transition: 0.3s; }
+        .footer-icons i:hover { color: white; transform: scale(1.2); }
+    </style>
+</head>
+<body>
+
+    <input type="radio" name="cuisine" id="indian" checked>
+    <input type="radio" name="cuisine" id="chinese">
+    <input type="radio" name="cuisine" id="continental">
+    <input type="radio" name="cuisine" id="desserts">
+    <input type="radio" name="cuisine" id="drinks">
+
+    <header>
+        <div class="logo">Saffron & Silk</div>
+        <div class="cart-icon"><i class="fas fa-shopping-bag"></i></div>
+    </header>
+
+    <section class="hero">
+        <div class="hero-overlay"></div>
+        <video class="video-bg" autoplay muted loop playsinline poster="https://images.unsplash.com/photo-1559339352-11d035aa65de">
+            <source src="https://assets.mixkit.co/videos/preview/mixkit-slow-motion-of-a-chef-preparing-a-dish-42438-large.mp4" type="video/mp4">
+        </video>
+        <div class="hero-content">
+            <h1>Global Flavors, Local Soul</h1>
+            <p>Experience a culinary journey with us</p>
+        </div>
+    </section>
+
+    <div class="controls">
+        <label for="indian" class="tab-label"><i class="fas fa-pepper-hot"></i> Indian</label>
+        <label for="chinese" class="tab-label"><i class="fas fa-utensils"></i> Chinese</label>
+        <label for="continental" class="tab-label"><i class="fas fa-pizza-slice"></i> Continental</label>
+        <label for="desserts" class="tab-label"><i class="fas fa-ice-cream"></i> Desserts</label>
+        <label for="drinks" class="tab-label"><i class="fas fa-cocktail"></i> Drinks</label>
+    </div>
+
+    <div class="menu-windows">
+        
+        <div class="cuisine-section indian-menu">
+            <div class="card"><div class="badge">Chef's Special</div><div class="image-box"><img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRHkdjOcugho40Znc2a--HkTxv7q8jH2gF1G64aTV_N0Zh545VyG5jumIX91V_fFidEvxhqF4WpuY5H9UjvuDJNxzPNxU97w0_oV2OGUDz7&s=10" alt="Butter Chicken"></div><div class="info"><div class="title-row"><span class="dish-name">Butter Chicken</span><span class="price">$16</span></div><p class="description">Tender chicken cooked in a rich, creamy tomato and butter gravy.</p><div class="action-row"><button class="btn btn-dine">Dine In</button><button class="btn btn-cart"><span>Add</span></button></div></div></div>
+            <div class="card"><div class="badge">Spicy</div><div class="image-box"><img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSoOnm5npPfDwrVXJdVXStFc69FTp1uWd0uUWifWI7wpJtC49zIJL-gBVqOqJq2yKxOS_VIvF-HssXVnA3zBeX2gx9XK-O0ptkSl7Q7Owhe&s=10" alt="Biryani"></div><div class="info"><div class="title-row"><span class="dish-name">Hyderabadi Biryani</span><span class="price">$14</span></div><p class="description">Aromatic basmati rice cooked with marinated lamb and saffron.</p><div class="action-row"><button class="btn btn-dine">Dine In</button><button class="btn btn-cart"><span>Add</span></button></div></div></div>
+            <div class="card"><div class="badge">Veg</div><div class="image-box"><img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQBFM4z79C8HuareKvbshiyKC8W8Snq91Kdpq7CzJDysG_SNGXadOvTwCvpXXaVIGHOjuzaCgqPPprwpx8ZzovHDXsVuVBRHcC5_1mIELiq&s=10" alt="Paneer Tikka"></div><div class="info"><div class="title-row"><span class="dish-name">Paneer Tikka</span><span class="price">$12</span></div><p class="description">Cottage cheese cubes marinated in yogurt and grilled.</p><div class="action-row"><button class="btn btn-dine">Dine In</button><button class="btn btn-cart"><span>Add</span></button></div></div></div>
+            <div class="card"><div class="badge">Classic</div><div class="image-box"><img src="https://images.unsplash.com/photo-1601050690597-df0568f70950?w=800" alt="Samosa"></div><div class="info"><div class="title-row"><span class="dish-name">Samosa Platter</span><span class="price">$8</span></div><p class="description">Crispy pastry filled with spiced potatoes, served with mint chutney.</p><div class="action-row"><button class="btn btn-dine">Dine In</button><button class="btn btn-cart"><span>Add</span></button></div></div></div>
+            <div class="card"><div class="badge">Kashmiri</div><div class="image-box"><img src="https://nishkitchen.com/wp-content/uploads/2015/11/Lamb-Rogan-Josh-1B.jpg" alt="Rogan Josh"></div><div class="info"><div class="title-row"><span class="dish-name">Lamb Rogan Josh</span><span class="price">$18</span></div><p class="description">Slow-braised lamb in a red chili and yogurt curry rich with spices.</p><div class="action-row"><button class="btn btn-dine">Dine In</button><button class="btn btn-cart"><span>Add</span></button></div></div></div>
+            <div class="card"><div class="badge">South Indian</div><div class="image-box"><img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR4u-6EfCBQG8ONFai5d90h__tTnH4meizqpstehisIOi1Wh1p1l8NgQU40ftajDmqAG21XB6Kp1rFHe3iQvXYKeZ2Nf6fdB7NRWiy3vLTo0g&s=10" alt="Dosa"></div><div class="info"><div class="title-row"><span class="dish-name">Masala Dosa</span><span class="price">$9</span></div><p class="description">Crispy rice crepe stuffed with spiced potatoes and chutney.</p><div class="action-row"><button class="btn btn-dine">Dine In</button><button class="btn btn-cart"><span>Add</span></button></div></div></div>
+            <div class="card"><div class="badge">Street Food</div><div class="image-box"><img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRPVb39622tKeh8LTRyos4qI_L09ew21ljPc--jTBUBZIORQ2ov__2jXjdFi8yMJQ7b32IIqkvXDcQrOD85GmDCfqV38ubciKd-PChfKkxM&s=10" alt="Chole"></div><div class="info"><div class="title-row"><span class="dish-name">Chole Bhature</span><span class="price">$11</span></div><p class="description">Spicy chickpeas served with fluffy fried bread.</p><div class="action-row"><button class="btn btn-dine">Dine In</button><button class="btn btn-cart"><span>Add</span></button></div></div></div>
+            <div class="card"><div class="badge">Goan</div><div class="image-box"><img src="https://images.unsplash.com/photo-1606471191009-63994c53433b?w=800" alt="Vindaloo"></div><div class="info"><div class="title-row"><span class="dish-name">Chicken Vindaloo</span><span class="price">$15</span></div><p class="description">A fiery, tangy curry made with vinegar, garlic, and chilies.</p><div class="action-row"><button class="btn btn-dine">Dine In</button><button class="btn btn-cart"><span>Add</span></button></div></div></div>
+        </div>
+
+        <div class="cuisine-section chinese-menu">
+            <div class="card"><div class="badge">Bestseller</div><div class="image-box"><img src="https://sammywongskitchen.com/wp-content/uploads/2021/05/IMG_18491-1536x1206.jpg" alt="Dim Sum"></div><div class="info"><div class="title-row"><span class="dish-name">Crystal Dim Sum</span><span class="price">$13</span></div><p class="description">Steamed translucent dumplings filled with shrimp and chives.</p><div class="action-row"><button class="btn btn-dine">Dine In</button><button class="btn btn-cart"><span>Add</span></button></div></div></div>
+            <div class="card"><div class="badge">Spicy</div><div class="image-box"><img src="https://images.unsplash.com/photo-1525755662778-989d0524087e?w=800" alt="Kung Pao"></div><div class="info"><div class="title-row"><span class="dish-name">Kung Pao Chicken</span><span class="price">$15</span></div><p class="description">Stir-fried chicken with peanuts, vegetables, and chili peppers.</p><div class="action-row"><button class="btn btn-dine">Dine In</button><button class="btn btn-cart"><span>Add</span></button></div></div></div>
+            <div class="card"><div class="badge">Noodles</div><div class="image-box"><img src="https://images.unsplash.com/photo-1585032226651-759b368d7246?w=800" alt="Noodles"></div><div class="info"><div class="title-row"><span class="dish-name">Hakka Noodles</span><span class="price">$10</span></div><p class="description">Wok-tossed noodles with julienned vegetables and soy sauce.</p><div class="action-row"><button class="btn btn-dine">Dine In</button><button class="btn btn-cart"><span>Add</span></button></div></div></div>
+            
+            <div class="card"><div class="badge">Crispy</div><div class="image-box"><img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRy3iusHGQHlu26T9tFhGas3zMoHoApZg09CGHLJfge2I2z8suA3N1qNL933GaOg_fH4hIL36rWlTl2ANG2yTqmruiG2bALBVfASeQk2L30&s=10" alt="Spring Rolls"></div><div class="info"><div class="title-row"><span class="dish-name">Veg Spring Rolls</span><span class="price">$8</span></div><p class="description">Golden fried pastry sheets filled with shredded cabbage and carrots.</p><div class="action-row"><button class="btn btn-dine">Dine In</button><button class="btn btn-cart"><span>Add</span></button></div></div></div>
+            <div class="card"><div class="badge">Signature</div><div class="image-box"><img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRDwDOBYI6Tm7oQUyDAoHMxxTp9rPoxTf3NkyPiQsrivXXb9l2S2TT_rFB3LOfFuVkLD1ssRCLQASLmib6B2wxeXZL2DvhfTi52_TkoO1uw8w&s=10" alt="Peking Duck"></div><div class="info"><div class="title-row"><span class="dish-name">Peking Duck</span><span class="price">$32</span></div><p class="description">Roasted duck with crispy skin, served with pancakes and hoisin.</p><div class="action-row"><button class="btn btn-dine">Dine In</button><button class="btn btn-cart"><span>Add</span></button></div></div></div>
+            <div class="card"><div class="badge">Sichuan</div><div class="image-box"><img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR1DhMeHFQJXhJCWXV8JuYdfn2K9FCnCypROZhc412Qn_4dhEqicLdrVb4RKLOP1fxg6fRp-0bbH67fj1BNk-sWCUBjV9b49YbYR6WNwPkX1g&s=10" alt="Mapo Tofu"></div><div class="info"><div class="title-row"><span class="dish-name">Mapo Tofu</span><span class="price">$12</span></div><p class="description">Silken tofu set in a spicy sauce with chili bean paste.</p><div class="action-row"><button class="btn btn-dine">Dine In</button><button class="btn btn-cart"><span>Add</span></button></div></div></div>
+            <div class="card"><div class="badge">Fusion</div><div class="image-box"><img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTLh-eKWQ7gjnd9VnNs9P81BWq0tDS3Owd3okg0b1T1oum5MPoP62PQsSd5oteWJGfmQn1k7SittePH85sbiry75aOrIVshjF8O7LIksu5l&s=10" alt="Manchurian"></div><div class="info"><div class="title-row"><span class="dish-name">Gobi Manchurian</span><span class="price">$11</span></div><p class="description">Crispy cauliflower florets tossed in a spicy soy sauce.</p><div class="action-row"><button class="btn btn-dine">Dine In</button><button class="btn btn-cart"><span>Add</span></button></div></div></div>
+            <div class="card"><div class="badge">Thai</div><div class="image-box"><img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSwojcogs7WZSes4sHFYViXHw4apOL9hBhcV58HngGMmkSoc9cLUI_hszcJyWNIELL7kjyZA2g6dEF8eQe-FzuFG_IjWrDX416pbpsG29SQ&s=10" alt="Green Curry"></div><div class="info"><div class="title-row"><span class="dish-name">Chinese Green Curry</span><span class="price">$16</span></div><p class="description">Aromatic curry with coconut milk, basil, and bamboo shoots.</p><div class="action-row"><button class="btn btn-dine">Dine In</button><button class="btn btn-cart"><span>Add</span></button></div></div></div>
+        </div>
+
+        <div class="cuisine-section continental-menu">
+            <div class="card"><div class="badge">Premium</div><div class="image-box"><img src="https://images.unsplash.com/photo-1600891964092-4316c288032e?w=800" alt="Steak"></div><div class="info"><div class="title-row"><span class="dish-name">Grilled Ribeye</span><span class="price">$28</span></div><p class="description">12oz Ribeye steak grilled to order, served with mashed potatoes.</p><div class="action-row"><button class="btn btn-dine">Dine In</button><button class="btn btn-cart"><span>Add</span></button></div></div></div>
+            <div class="card"><div class="badge">Italian</div><div class="image-box"><img src="https://images.unsplash.com/photo-1574071318508-1cdbab80d002?w=800" alt="Pizza"></div><div class="info"><div class="title-row"><span class="dish-name">Margherita Pizza</span><span class="price">$14</span></div><p class="description">Classic wood-fired pizza with San Marzano tomatoes.</p><div class="action-row"><button class="btn btn-dine">Dine In</button><button class="btn btn-cart"><span>Add</span></button></div></div></div>
+            <div class="card"><div class="badge">British</div><div class="image-box"><img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQuhSyOO7GP6cLwcmjsducWH6yMX0FO1Zv4q0YKGuGCn3__pHMS7DqwyPuLmZmgi6XP8qScJGDOzb8IdxgAYueByvUJsTTK4t78K3K73K8ceA&s=10" alt="Fish and Chips"></div><div class="info"><div class="title-row"><span class="dish-name">Fish & Chips</span><span class="price">$15</span></div><p class="description">Battered cod served with thick-cut chips and tartar sauce.</p><div class="action-row"><button class="btn btn-dine">Dine In</button><button class="btn btn-cart"><span>Add</span></button></div></div></div>
+            <div class="card"><div class="badge">Exquisite</div><div class="image-box"><img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRR90oVzj9pL1352JGRifLAzvTeaINrLi6EIhcCw_-GTcBaBDbavKTiVUjYLM8vgj0j2A80qVAU9Agp_RW95sC1ZD5NNOgqeX6H3WElbegmHg&s=10" alt="Beef Wellington"></div><div class="info"><div class="title-row"><span class="dish-name">Beef Wellington</span><span class="price">$35</span></div><p class="description">Fillet steak wrapped in puff pastry with mushroom duxelles.</p><div class="action-row"><button class="btn btn-dine">Dine In</button><button class="btn btn-cart"><span>Add</span></button></div></div></div>
+            <div class="card"><div class="badge">French</div><div class="image-box"><img src="https://images.themodernproper.com/production/posts/2016/ClassicCheeseBurger_8.jpg?w=1200&q=82&auto=format&fit=crop&dm=1749310221&s=26232ec4e1f88892f48de0c5a66b3e4e" alt="Burger"></div><div class="info"><div class="title-row"><span class="dish-name">Gourmet Burger</span><span class="price">$18</span></div><p class="description">Wagyu beef patty with smoked gouda and caramelized onions.</p><div class="action-row"><button class="btn btn-dine">Dine In</button><button class="btn btn-cart"><span>Add</span></button></div></div></div>
+            <div class="card"><div class="badge">Mediterranean</div><div class="image-box"><img src="https://images.unsplash.com/photo-1623428187969-5da2dcea5ebf?w=800" alt="Greek Salad"></div><div class="info"><div class="title-row"><span class="dish-name">Greek Salad</span><span class="price">$10</span></div><p class="description">Cucumbers, tomatoes, olives, red onion, and feta cheese.</p><div class="action-row"><button class="btn btn-dine">Dine In</button><button class="btn btn-cart"><span>Add</span></button></div></div></div>
+        </div>
+
+        <div class="cuisine-section desserts-menu">
+            <div class="card">
+                <div class="badge">Italian</div>
+                <div class="image-box"><img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRMGrIt0L1d5dQmhDePKHrC4vRmPMgPQf4jSQ&s" alt="Tiramisu"></div>
+                <div class="info"><div class="title-row"><span class="dish-name">Classic Tiramisu</span><span class="price">$9</span></div><p class="description">Coffee-soaked ladyfingers layered with mascarpone cream.</p><div class="action-row"><button class="btn btn-dine">Dine In</button><button class="btn btn-cart"><span>Add</span></button></div></div>
+            </div>
+            <div class="card">
+                <div class="badge">Turkish</div>
+                <div class="image-box"><img src="https://houseandhome.com/wp-content/uploads/2025/01/Feature_Turkish-Pistachio-Baklava.jpg" alt="Baklava"></div>
+                <div class="info"><div class="title-row"><span class="dish-name">Pistachio Baklava</span><span class="price">$10</span></div><p class="description">Flaky phyllo pastry filled with chopped nuts and soaked in honey.</p><div class="action-row"><button class="btn btn-dine">Dine In</button><button class="btn btn-cart"><span>Add</span></button></div></div>
+            </div>
+            <div class="card">
+                <div class="badge">American</div>
+                <div class="image-box"><img src="https://images.unsplash.com/photo-1533134242443-d4fd215305ad?w=800" alt="Cheesecake"></div>
+                <div class="info"><div class="title-row"><span class="dish-name">Blueberry Cheesecake</span><span class="price">$8</span></div><p class="description">Rich and creamy cheesecake with a graham cracker crust and berries.</p><div class="action-row"><button class="btn btn-dine">Dine In</button><button class="btn btn-cart"><span>Add</span></button></div></div>
+            </div>
+            <div class="card">
+                <div class="badge">French</div>
+                <div class="image-box"><img src="https://www.arka.com/cdn/shop/files/themed-macaron-packaging-ideas.jpg?v=1710337257" alt="Macarons"></div>
+                <div class="info"><div class="title-row"><span class="dish-name">Macaron Box</span><span class="price">$12</span></div><p class="description">Assorted almond meringue cookies with ganache filling.</p><div class="action-row"><button class="btn btn-dine">Dine In</button><button class="btn btn-cart"><span>Add</span></button></div></div>
+            </div>
+            <div class="card">
+                <div class="badge">Spanish</div>
+                <div class="image-box"><img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRg9TOvBsb83Kum5i5JTesV72Qn2iRXJuErNg&s" alt="Churros"></div>
+                <div class="info"><div class="title-row"><span class="dish-name">Churros & Chocolate</span><span class="price">$7</span></div><p class="description">Fried dough sticks dusted with sugar, served with hot chocolate.</p><div class="action-row"><button class="btn btn-dine">Dine In</button><button class="btn btn-cart"><span>Add</span></button></div></div>
+            </div>
+            <div class="card">
+                <div class="badge">Japanese</div>
+                <div class="image-box"><img src="https://pickyeaterblog.com/wp-content/uploads/2023/03/mango-mochi.jpg" alt="Mochi"></div>
+                <div class="info"><div class="title-row"><span class="dish-name">Ice Cream Mochi</span><span class="price">$6</span></div><p class="description">Sweet rice dough filled with green tea and mango ice cream.</p><div class="action-row"><button class="btn btn-dine">Dine In</button><button class="btn btn-cart"><span>Add</span></button></div></div>
+            </div>
+        </div>
+
+        <div class="cuisine-section drinks-menu">
+            <div class="card">
+                <div class="badge">Refreshing</div>
+                <div class="image-box"><img src="https://palatesdesire.com/wp-content/uploads/2022/03/virgin-mojito-recipe@palate-desire-2-500x375.jpg" alt="Mojito"></div>
+                <div class="info"><div class="title-row"><span class="dish-name">Virgin Mojito</span><span class="price">$6</span></div><p class="description">Fresh mint, lime juice, and sparkling water.</p><div class="action-row"><button class="btn btn-dine">Dine In</button><button class="btn btn-cart"><span>Add</span></button></div></div>
+            </div>
+            <div class="card">
+                <div class="badge">Exotic</div>
+                <div class="image-box"><img src="https://www.amulcafe.in/wp-content/uploads/2024/03/1.png" alt="Blue Lagoon"></div>
+                <div class="info"><div class="title-row"><span class="dish-name">Blue Lagoon</span><span class="price">$7</span></div><p class="description">Blue Curaçao syrup, lemonade, and crushed ice.</p><div class="action-row"><button class="btn btn-dine">Dine In</button><button class="btn btn-cart"><span>Add</span></button></div></div>
+            </div>
+            <div class="card">
+                <div class="badge">Healthy</div>
+                <div class="image-box"><img src="https://growthzonesitesprod.azureedge.net/wp-content/uploads/sites/2039/2022/06/Berry-Blast-2.jpg" alt="Smoothie"></div>
+                <div class="info"><div class="title-row"><span class="dish-name">Berry Blast Smoothie</span><span class="price">$8</span></div><p class="description">Blend of strawberries, blueberries, yogurt, and honey.</p><div class="action-row"><button class="btn btn-dine">Dine In</button><button class="btn btn-cart"><span>Add</span></button></div></div>
+            </div>
+            <div class="card">
+                <div class="badge">Traditional</div>
+                <div class="image-box"><img src="https://www.vegrecipesofindia.com/wp-content/uploads/2021/05/mango-lassi-recipe-1.jpg" alt="Lassi"></div>
+                <div class="info"><div class="title-row"><span class="dish-name">Mango Lassi</span><span class="price">$5</span></div><p class="description">Thick yogurt drink blended with sweet mango pulp.</p><div class="action-row"><button class="btn btn-dine">Dine In</button><button class="btn btn-cart"><span>Add</span></button></div></div>
+            </div>
+            <div class="card">
+                <div class="badge">Hot</div>
+                <div class="image-box"><img src="https://images.immediate.co.uk/production/volatile/sites/30/2025/07/GoodFoodFrappe-8757348.jpg?quality=90&webp=true&resize=800,726" alt="Coffee"></div>
+                <div class="info"><div class="title-row"><span class="dish-name">Caramel Frappe</span><span class="price">$7</span></div><p class="description">Iced coffee blended with caramel sauce and whipped cream.</p><div class="action-row"><button class="btn btn-dine">Dine In</button><button class="btn btn-cart"><span>Add</span></button></div></div>
+            </div>
+            <div class="card">
+                <div class="badge">Trending</div>
+                <div class="image-box"><img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRPk8TbTTO3m1Dlly4fuUuyBvXy6nxwmtPeE2G33W3Bi35f8_au_MtUAjg&s" alt="Boba"></div>
+                <div class="info"><div class="title-row"><span class="dish-name">Brown Sugar Boba</span><span class="price">$8</span></div><p class="description">Milk tea with chewy tapioca pearls and brown sugar syrup.</p><div class="action-row"><button class="btn btn-dine">Dine In</button><button class="btn btn-cart"><span>Add</span></button></div></div>
+            </div>
+        </div>
+
+    </div>
+
+    <footer>
+        <div class="footer-icons">
+            <i class="fab fa-facebook-f"></i>
+            <i class="fab fa-instagram"></i>
+            <i class="fab fa-twitter"></i>
+        </div>
+        <p>&copy; 2024 Saffron & Silk Founder - Sudiksha Singh</p>
+    </footer>
+
+</body>
+</html>
